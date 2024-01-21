@@ -28,19 +28,44 @@ XPATHS = {
         "tag": "td",
         "i": 101,
     },    
+    "SI_currentPrice": {
+        "tag": "//*[@id='cards-ticker']/div[1]/div[2]/div/span",
+        "i": 0
+    },
+    "SI_balance12M": {
+        "tag": "//*[@id='cards-ticker']/div[2]/div[2]/div/span",
+        "i": 0
+    },
+    "SI_dy": {
+        "tag": "//*[@id='cards-ticker']/div[5]/div[2]/span",
+        "i": 0
+    },
+    "SI_vpa": {
+        "tag": "//*[@id='table-indicators']/div[17]/div[1]/span",
+        "i": 0
+    },
+    "SI_lpa": {
+        "tag": "//*[@id='table-indicators']/div[18]/div[1]/span",
+        "i": 0
+    },
+    "SI_dividends": {
+        "tag": "//*[@id='table-dividends-history']",
+        "i": 0
+    },
 }
 
 urls = {
     "currentPrice": "https://www.google.com/finance/quote/@stock:BVMF",
     "fundamentInfo": "https://www.dadosdemercado.com.br/bolsa/acoes/@stock",
     "brapi": "https://brapi.dev/api/quote/@stock?token=@token",
-    "yahooFinances": "https://br.financas.yahoo.com/quote/@stock.SA/key-statistics?p=@stock.SA"
+    "yahooFinances": "https://br.financas.yahoo.com/quote/@stock.SA/key-statistics?p=@stock.SA",
+    "statusInvest": "https://investidor10.com.br/acoes/@stock/",
 }
 
 results = []
 
 options = webdriver.ChromeOptions()
-options.add_argument("--headless=new")
+# options.add_argument("--headless=new")
 options.add_argument("--disable-cache")
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
 
@@ -52,11 +77,12 @@ for stockName in stocksToAnalyze:
     
 
     print("-----------------------------")
-    print(f"{stockName} | Buscando dados...")
+    print(f"{stockName} | Buscando dados (Investidor 10)...")
         
-    driver.get(urls["currentPrice"].replace("@stock", stockName))
+    driver.get(urls["statusInvest"].replace("@stock", stockName))
     
 
+    #[x for x in driver.find_elements(By.XPATH, XPATHS["SI_dividends"]["tag"])[0].text.split("\n") if "2023" in x.split(' ')[2]]
     print(f"{stockName} | Buscando preço atual...")
     elementHTML = findElementSelenium(driver, By.CLASS_NAME, XPATHS["googleCurrentPrice"], stockName)
     print(f"Valor encontrado = '{elementHTML.text}'")
