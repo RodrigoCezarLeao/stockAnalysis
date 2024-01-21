@@ -9,7 +9,7 @@ from time import sleep
 import requests
 
 
-stocksToAnalyze = ["SAPR4", "SANB3", "KLBN4", "GOAU4", "VALE3", "BBAS3"]
+stocksToAnalyze = ["SAPR4", "SANB3", "KLBN4", "GOAU4", "VALE3", "BBAS3", "WEGE3", "EGIE3"]
 
 XPATHS = {    
     "googleCurrentPrice": {
