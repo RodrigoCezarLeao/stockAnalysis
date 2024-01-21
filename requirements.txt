@@ -1,3 +1,5 @@
 selenium
 flask
 requests
+pandas
+numpy
