@@ -35,3 +35,9 @@ def saveFile(txt):
     fp = open("report.txt", "w")
     fp.write(txt)
     fp.close()
+
+def convert(string):
+    return string.replace(",", ".")
+
+def roundFloat(num):
+    return round(num, 3)
