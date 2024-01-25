@@ -7,15 +7,23 @@ from datetimeHelper import *
 from driver import *
 import pandas as pd
 
-ticker = "BBAS3"
+# ticker = "BBAS3"
 
-driver = Driver()
+# driver = Driver()
 
-driver.loadAlreadySavedData(ticker)
+# driver.loadAlreadySavedData(ticker)
 
-driver.initializeBrowser()
-if driver.dividendsNeedToBeUpdated(ticker):
-    driver.updateDividends(ticker)
+# driver.initializeBrowser()
+# if driver.dividendsNeedToBeUpdated(ticker):
+#     driver.updateDividends(ticker)
 
     
-driver.updateDividendsDatePrice(ticker)
+# driver.updateDividendsDatePrice(ticker)
+
+
+
+#######################
+
+driver = Driver(ticker="VALE3")
+driver.initializeBrowser()
+driver.getIndicators(["VPA"])

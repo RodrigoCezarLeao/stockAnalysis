@@ -4,14 +4,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 
+def cleanFloatString(string):
+    return string.replace(",", ".").replace("R$", "").replace(" ", "").replace("%", "").replace("Bilhões", "")
+
 def tryParseFloat(string):
     try:
-        return float(string)
+        return float(cleanFloatString(string))
     except Exception:
         return 0
     
-def cleanFloatString(string):
-    return string.replace(",", ".").replace("R$", "").replace(" ", "").replace("%", "")
 
 
 def findElementSelenium(driver, type, selector, stockName):
