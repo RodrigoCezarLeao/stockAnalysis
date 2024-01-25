@@ -11,9 +11,11 @@ class Driver():
     driver = ""
     df = pd.DataFrame()
     visible = True
+    ticker = ""
     
-    def __init__(self, visible=True):
+    def __init__(self, visible=True, ticker=""):
         self.visible = visible
+        self.ticker = ticker
         
 
     def initializeBrowser(self):
@@ -25,6 +27,14 @@ class Driver():
             options.add_argument("--headless=new")
 
         self.driver = webdriver.Chrome(options=options)
+
+    def browserGoTo(self, operation, args = {}):
+        if operation == "GET_INDICATORS":
+            URL = "https://investidor10.com.br/acoes/@ticker/"
+            self.driver.get(URL.replace("@ticker", self.ticker))
+        if operation == "EXTRACT_HISTORIC_PRICE_DATA":
+            URL = "https://www.ibovx.com.br/historico-papeis-bovespa.aspx?papel=@ticker&dtini=@date&dtfim=@date"
+            self.driver.get(URL.replace("@ticker", self.ticker).replace("@date", args["date"]))
 
     def loadAlreadySavedData(self, ticker):
         try:
@@ -162,3 +172,40 @@ class Driver():
         except:    
             self.df.to_csv(f"reports/dividends_history_{ticker}_report.csv", index=False, sep=";")
         
+    def getIndicators(self, indicatorsList = []):
+        self.browserGoTo("GET_INDICATORS")
+        result = {}
+
+        if "VPA" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators']/div[17]/div[1]/span")))
+            result["VPA"] = tryParseFloat(tableElem.text)
+
+        if "LPA" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators']/div[18]/div[1]/span")))
+            result["LPA"] = tryParseFloat(tableElem.text)
+
+        if "MARKET_VALUE" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators-company']/div[1]/span[2]/div[1]")))
+            result["MARKET_VALUE"] = tryParseFloat(tableElem.text)
+
+        if "STOCK_AMOUNT" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators-company']/div[4]/span[2]/div[1]")))
+            result["STOCK_AMOUNT"] = tryParseFloat(tableElem.text)
+
+        if "FREE_FLOAT" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators-company']/div[11]/span[2]")))
+            result["FREE_FLOAT"] = tryParseFloat(tableElem.text)
+
+        if "TAG_ALONG" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators-company']/div[12]/span[2]")))
+            result["TAG_ALONG"] = tryParseFloat(tableElem.text)
+
+        if "DAILY_LIQUIDITY_AVG" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators-company']/div[13]/span[2]/div[1]")))
+            result["DAILY_LIQUIDITY_AVG"] = tryParseFloat(tableElem.text)
+
+        
+
+
+        return result
+
