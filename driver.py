@@ -184,6 +184,10 @@ class Driver():
             tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators']/div[18]/div[1]/span")))
             result["LPA"] = tryParseFloat(tableElem.text)
 
+        if "NET_WORTH" in indicatorsList:
+            tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators-company']/div[3]/span[2]/div[1]")))
+            result["NET_WORTH"] = tryParseFloat(tableElem.text)
+
         if "MARKET_VALUE" in indicatorsList:
             tableElem = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//*[@id='table-indicators-company']/div[1]/span[2]/div[1]")))
             result["MARKET_VALUE"] = tryParseFloat(tableElem.text)

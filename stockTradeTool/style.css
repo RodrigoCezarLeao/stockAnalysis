@@ -1,0 +1,36 @@
+* {margin:0; padding: 0;}
+
+main {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+main table, main table th, main table td {
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+}
+
+main table th, main table td {
+    padding: 5px 10px;
+    font-size: 1.5em;
+    
+}
+
+main table td span {
+    cursor: pointer;    
+}
+
+
+main table tbody tr td input, main table tbody tr td select {
+    font-size: 1em;
+    text-align: center;
+}
+
+main table tbody tr td input {
+    width: 150px;
+}
+
+.buy {background: lightgreen;}
+.sell {background: #FFCCCB;}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Trade - Calculator Tool</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+
+    <h1>Calculate stock's trade profit</h1>
+
+
+    <button onclick="addNewRecord('buy')">Add Buy</button>
+    <button onclick="addNewRecord('sell')">Add Sell</button>
+
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+
+            <footer>
+                <tr>
+                    <td colspan="3"></td>                
+                    <td><span class="material-symbols-outlined" onclick="addNewRecord('buy')">add_circle</span></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">Balance</td>
+                    <td colspan="2"></td>
+                </tr>
+            </footer>
+        </table>
+    </main>
+
+    <script src="script.js"></script>    
+</body>
+</html>
