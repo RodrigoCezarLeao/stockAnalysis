@@ -1,3 +1,66 @@
+const addNewTickerTable = () => {
+    const table = document.createElement("table");
+
+    // CAPTION
+    const caption = document.createElement("caption");
+    const inputTicker = document.createElement("input");
+    caption.appendChild(inputTicker);
+    table.appendChild(caption);
+
+    // THEAD
+    const thead = document.createElement("thead");
+    const tr = document.createElement("tr");
+    const th1 = document.createElement("th");
+    th1.textContent = "Type";
+    const th2 = document.createElement("th");
+    th2.textContent = "Price";
+    const th3 = document.createElement("th");
+    th3.textContent = "Amount";
+    const th4 = document.createElement("th");
+    th4.textContent = "Total";
+
+    tr.appendChild(th1);
+    tr.appendChild(th2);
+    tr.appendChild(th3);
+    tr.appendChild(th4);
+    thead.appendChild(tr);
+    table.appendChild(tr);
+
+
+    // TBODY
+    table.appendChild(document.createElement("tbody"));
+
+    // FOOTER
+    const footer = document.createElement("tbody");
+    const f_tr1 = document.createElement("tr");
+    const f_tr1_td1 = document.createElement("td");
+    f_tr1_td1.colSpan = 3;
+    const f_tr1_td2 = document.createElement("td");
+    const span = document.createElement("span");
+    span.className = "material-symbols-outlined";
+    span.textContent = "add_circle";
+    span.addEventListener("click", () => {addNewRecord('buy')})
+    f_tr1_td2.appendChild(span);
+
+    f_tr1.appendChild(f_tr1_td1);
+    f_tr1.appendChild(f_tr1_td2);
+    footer.appendChild(f_tr1);
+
+    const f_tr2 = document.createElement("tr");
+    const f_tr2_td1 = document.createElement("td");
+    f_tr2_td1.colSpan = 2;
+    f_tr2_td1.textContent = "Balance";
+    const f_tr2_td2 = document.createElement("td");
+    f_tr2_td2.colSpan = 2;
+
+    f_tr2.appendChild(f_tr2_td1);
+    f_tr2.appendChild(f_tr2_td2);
+    footer.appendChild(f_tr2);
+    table.appendChild(footer);
+    
+    document.getElementsByTagName("main")?.[0].appendChild(table);
+}
+
 const addNewRecord = (type) => {
     const tr = document.createElement("tr");
     tr.className = type;
@@ -56,12 +119,12 @@ const addNewRecord = (type) => {
     const span = document.createElement("span");
     span.className = "material-symbols-outlined";
     span.textContent = "delete";
+    span.addEventListener("click", () => {tr.remove();});
 
     td5.appendChild(span);
     tr.appendChild(td5);
 
-        
-    document.getElementsByTagName("tbody")[0].appendChild(tr);
+    window.event.srcElement.offsetParent.offsetParent.children[2].appendChild(tr);
     
 }
 
@@ -86,11 +149,11 @@ const calculateTotalInRow = (tr, type) => {
 
 const updateBalance = (table) => {
     let total = 0;
-    for (let row of table.children[1].children){
+    for (let row of table.children[2].children){
         let totalPrice = row.children[3].textContent.replace("$", "");
         total += Number(totalPrice);
     }
     
-    table.children[2].children[1].children[1].textContent = `${total <= 0 ? "+" : "-"} $ ${(-1 * total).toFixed(2).replace("-","")}`;
-    table.children[2].children[1].children[1].className = !total ? "" : total > 0 ? "sell" : "buy";
+    table.children[3].children[1].children[1].textContent = `${total <= 0 ? "+" : "-"} $ ${(-1 * total).toFixed(2).replace("-","")}`;
+    table.children[3].children[1].children[1].className = !total ? "" : total > 0 ? "buy" : "sell";
 }

@@ -1,5 +1,5 @@
+- Adicionar diversas tabelas de ações (ok)
 - Salvar dados em localStorage
-- Adicionar diversas tabelas de ações
 - Atalhos para inserir buy e sell
 
  
