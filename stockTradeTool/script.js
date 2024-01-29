@@ -61,7 +61,7 @@ const addNewTickerTable = () => {
     document.getElementsByTagName("main")?.[0].appendChild(table);
 }
 
-const addNewRecord = (type) => {
+const addNewRecord = (type, tbody = null, price = null, amount = null) => {
     const tr = document.createElement("tr");
     tr.className = type;
 
@@ -74,6 +74,7 @@ const addNewRecord = (type) => {
     option_sell.value = "sell";
     option_sell.textContent = "Sell";
     select.className = type;
+    select.selectedOptions = type;
     select.addEventListener("change", () => {
         changeRecordType(tr, select.value);
         calculateTotalInRow(tr, select.value);        
@@ -95,6 +96,8 @@ const addNewRecord = (type) => {
         calculateTotalInRow(tr, select.value);        
         updateBalance(tr.offsetParent);
     });
+    if (price)
+        inputNumber.value = price;
 
     td2.appendChild(inputNumber);
     tr.appendChild(td2);
@@ -108,11 +111,15 @@ const addNewRecord = (type) => {
         calculateTotalInRow(tr, select.value);
         updateBalance(tr.offsetParent);
     });
+    if (amount)
+        inputNumber2.value = amount;
 
     td3.appendChild(inputNumber2);
     tr.appendChild(td3);
 
-    const td4 = document.createElement("td");
+    const td4 = document.createElement("td");    
+    if (price && amount)
+        td4.textContent = `$ ${type === "sell" ? "-" : ""}${(price * amount).toFixed(2)}`;
     tr.appendChild(td4);
 
     const td5 = document.createElement("td");
@@ -124,7 +131,7 @@ const addNewRecord = (type) => {
     td5.appendChild(span);
     tr.appendChild(td5);
 
-    window.event.srcElement.offsetParent.offsetParent.children[2].appendChild(tr);
+    tbody ? tbody.appendChild(tr) : window.event.srcElement.offsetParent.offsetParent.children[2].appendChild(tr);
     
 }
 
@@ -156,4 +163,19 @@ const updateBalance = (table) => {
     
     table.children[3].children[1].children[1].textContent = `${total <= 0 ? "+" : "-"} $ ${(-1 * total).toFixed(2).replace("-","")}`;
     table.children[3].children[1].children[1].className = !total ? "" : total > 0 ? "buy" : "sell";
+}
+
+const addLoadedTickerTable = (tickerInfo) => {
+    addNewTickerTable();
+    
+    let lastTable = document.getElementsByTagName("main")?.[0].children;
+    lastTable = lastTable[lastTable.length - 1];
+    
+    lastTable.children[0].children[0].value = tickerInfo.ticker;
+
+    for (let tr of tickerInfo.result){        
+        addNewRecord(tr.type, lastTable.children[2], tr.unitValue, tr.amount);
+        updateBalance(lastTable);
+    }
+
 }
