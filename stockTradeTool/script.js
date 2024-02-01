@@ -2,10 +2,27 @@ const addNewTickerTable = () => {
     const table = document.createElement("table");
 
     // CAPTION
-    const caption = document.createElement("caption");
+    const caption = document.createElement("tr");
     const inputTicker = document.createElement("input");
+    inputTicker.style.fontSize = "1.3em";
+    inputTicker.style.textAlign = "center";
+    inputTicker.style.lineHeight = 2;
+
+    const avgPrice = document.createElement("td");
+    avgPrice.textContent = "Average Price: $";
+    const stockAmount = document.createElement("td");
+    stockAmount.textContent = "Stock Amount: $";
+    const currentPrice = document.createElement("td");
+    currentPrice.textContent = "Current Price: $";
+
     caption.appendChild(inputTicker);
+    caption.appendChild(currentPrice);
+    caption.appendChild(avgPrice);
+    caption.appendChild(stockAmount);
     table.appendChild(caption);
+
+
+
 
     // THEAD
     const thead = document.createElement("thead");
@@ -176,7 +193,9 @@ const calculateTotalInRow = (tr, type) => {
     tr.children[3].textContent = `$ ${type === "sell" ? "-" : ""}${total.toFixed(2)}`;
 }
 
-const updateBalance = (table, currentPrice=0) => {
+const updateBalance = (table, ticker) => {
+    currentPrice = sessionStorage.getItem(`stock_analysis-${ticker}`);
+
     table.children[3].children[2].children[1].textContent = "@unitvalue x @amount = @total";
     table.children[3].children[2].children[2].textContent = "Total Balance: $ @total";
 
@@ -203,10 +222,13 @@ const updateBalance = (table, currentPrice=0) => {
 
     totalCurrentPrice = (currentPrice * remainingStocks) - (midPrice * remainingStocks);
     table.children[3].children[2].children[2].textContent = table.children[3].children[2].children[2].textContent.replace("@total", totalCurrentPrice.toFixed(2));
+    
+    table.children[0].children[1].textContent = `Current Price: ${Number(sessionStorage.getItem(`stock_analysis-${ticker}`)).toFixed(2)}`
+    table.children[0].children[2].textContent = `Average Price: ${midPrice.toFixed(2)}`
+    table.children[0].children[3].textContent = `Stock Amount: ${remainingStocks}`
 }
 
-const addLoadedTickerTable = async (tickerInfo) => { 
-    currentPrice = await findTickerPrice(tickerInfo.ticker);   
+const addLoadedTickerTable = (tickerInfo) => {
     addNewTickerTable();
     
     let lastTable = document.getElementsByTagName("main")?.[0].children;
@@ -216,7 +238,7 @@ const addLoadedTickerTable = async (tickerInfo) => {
 
     for (let tr of tickerInfo.result){
         addNewRecord(tr.type, lastTable.children[2], tr.unitValue, tr.amount, ticker=tickerInfo.ticker);
-        updateBalance(lastTable, currentPrice);
+        updateBalance(lastTable, tickerInfo.ticker);
     }
 
 }

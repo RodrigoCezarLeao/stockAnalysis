@@ -34,12 +34,14 @@ const saveInterfaceData = () => {
     window.localStorage.setItem("stock_analysis-save", JSON.stringify(pageResult));
 }
 
-const loadAllInterfaceData = () => {
+const loadAllInterfaceData = async () => {
     const pageResult = JSON.parse(window.localStorage.getItem("stock_analysis-save"));
 
     if (pageResult && pageResult.length > 0){
         for (let table of pageResult){
-            addLoadedTickerTable(table);        
+            currentPrice = await findTickerPrice(table.ticker);
+            sessionStorage.setItem(`stock_analysis-${table.ticker}`, currentPrice);
+            addLoadedTickerTable(table);
         }
     }
 }
