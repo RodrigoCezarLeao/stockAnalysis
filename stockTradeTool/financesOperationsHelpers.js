@@ -50,16 +50,28 @@ const singleExampleTwo = {
             price: 15,
         },
         {
-            type: "sell",
+            type: "split",
             date: "2024-02-03",
+            amount: 10,
+            price: 0,
+        },
+        {
+            type: "sell",
+            date: "2024-02-04",
             amount: 100,
-            price: 1000,
+            price: 1,
         },
         {
             type: "buy",
-            date: "2024-02-04",
+            date: "2024-02-05",
             amount: 50,
-            price: 20,
+            price: 0.5,
+        },
+        {
+            type: "inplit",
+            date: "2024-02-06",
+            amount: 2,
+            price: 0,
         },
     ]
 
@@ -69,8 +81,25 @@ const calculateRemainingStockAmount = (tradingHistory) => {
     totalStocks = 0;
 
     for(let record of tradingHistory){
-        let recordStocks = record.type === "buy" ? record.amount : record.type === "sell" ? record.amount * -1 : 0;
-        totalStocks += recordStocks;
+        let recordStocks = 0;
+        switch (record.type){
+            case 'buy':
+                recordStocks = record.amount;
+                totalStocks += recordStocks;
+                break;
+            case 'sell':
+                recordStocks = record.amount * -1;
+                totalStocks += recordStocks;
+                break;
+            case 'split':
+                totalStocks = totalStocks * record.amount;                
+                break;
+            case 'inplit':                
+                totalStocks = totalStocks / record.amount;
+                break;
+            default:
+                break;
+        }        
     }
 
     return totalStocks;
@@ -82,21 +111,34 @@ const calculateAveragePrice = (tradingHistory) => {
     totalStock = 0;
     
     for(let record of tradingHistory){
-        if (record.type === "buy"){
-            if (avgPrice === 0 ){
-                avgPrice = record.price;
-                totalStock = record.amount;
-            }
-            else {
-                avgPrice = ((avgPrice * totalStock) + (record.price * record.amount)) / (totalStock + record.amount);
-                totalStock += record.amount;
-            }
-        }else if (record.type === "sell"){
-            totalStock -= record.amount;
-        }
+        switch (record.type){
+            case 'buy':
+                if (avgPrice === 0 ){
+                    avgPrice = record.price;
+                    totalStock = record.amount;
+                }
+                else {
+                    avgPrice = ((avgPrice * totalStock) + (record.price * record.amount)) / (totalStock + record.amount);
+                    totalStock += record.amount;
+                }
+                break;
+            case 'sell':
+                totalStock -= record.amount;
+                break;
+            case 'split':
+                totalStock = totalStock * record.amount;
+                avgPrice = avgPrice / record.amount;
+                break;
+            case 'inplit':
+                totalStock = totalStock / record.amount;
+                avgPrice = avgPrice * record.amount;
+                break;
+            default:
+                break;
+        }        
     }
     
-    return avgPrice;    
+    return avgPrice;
 }
 
 
