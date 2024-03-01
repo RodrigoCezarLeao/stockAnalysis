@@ -152,13 +152,11 @@ const calculateTotalInvestmentCost = (tradingHistory) => {
 }
 
 
-result = calculateRemainingStockAmount(singleExampleTwo.tradingHistory);
-result1 = calculateAveragePrice(singleExampleTwo.tradingHistory);
-result3 = calculateTotalInvestmentCost(singleExampleTwo.tradingHistory);
+// result = calculateRemainingStockAmount(singleExampleTwo.tradingHistory);
+// result1 = calculateAveragePrice(singleExampleTwo.tradingHistory);
+// result3 = calculateTotalInvestmentCost(singleExampleTwo.tradingHistory);
 
-console.log("🚀 ~ result:", result);
-console.log("🚀 ~ result1:", result1);
-console.log("🚀 ~ result3:", result3);
+// console.log("🚀 ~ result:", result);
+// console.log("🚀 ~ result1:", result1);
+// console.log("🚀 ~ result3:", result3);
 
-
-// Fazer split, inplit de ações e histórico de dividendos

@@ -5,23 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Trade - Calculator Tool</title>
     <link rel="stylesheet" href="style.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" /> -->
 </head>
 <body>
 
-    <h1>Calculate stock's trade profit</h1>
+    <header>
+        <h1>Ludmilo - Finance assistant</h1>
 
-
-    <button onclick="addNewTickerTable()">Add Buy</button>
-    <button onclick="saveInterfaceData()">Save</button>
+        <button onclick="createNewWallet()">Add Wallet</button>
+        <button onclick="saveAll()">Save data</button>
+    </header>
     
+    <main>
+        <aside id="wallets_list_container">
+            <h3>Wallets</h3>
+            <ul id="wallets_list" onclick="openWalletContent_UI(event)"></ul>
+        </aside>
 
-
-    <main></main>
-
-    <script src="financesOperationsHelpers.js"></script>
-    <script src="requests.js"></script>
-    <script src="script.js"></script>
-    <script src="storageData.js"></script>
+        <section id="current_wallet_content_container"></section>
+    </main>
+    
+    <script src="wallet.js"></script>
+    <script src="dataStorage.js"></script>
 </body>
 </html>
